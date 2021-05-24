@@ -80,7 +80,7 @@ public class SCryptHasher
         for (i = 0; i < 32; i++)
         {
             //B[i * 4 + 0] = (byte) (X[i] >> 0);
-            B[i * 4 + 0] = (byte) (X[i]);
+            B[i * 4] = (byte) (X[i]);
             B[i * 4 + 1] = (byte) (X[i] >> 8);
             B[i * 4 + 2] = (byte) (X[i] >> 16);
             B[i * 4 + 3] = (byte) (X[i] >> 24);

@@ -9,12 +9,15 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.Queue;
 import rabbitminer.Cluster.Server.ClusterServer;
 import rabbitminer.Cluster.Server.ClusterServerSettings;
 import rabbitminer.Cluster.Server.NodeTCPConnectionVariables;
 import rabbitminer.Cluster.StratumClient.StratumClient;
 import rabbitminer.Cluster.StratumClient.StratumPoolSettings;
 import rabbitminer.Stratum.StratumJob;
+import rabbitminer.Stratum.StratumJob_SCrypt;
 
 /**
  *
@@ -30,6 +33,8 @@ import rabbitminer.Stratum.StratumJob;
  */
 public class RabbitCluster
 {
+
+    private Queue<StratumJob> fLastJobs = new LinkedList<StratumJob>();
 
     // Statistics
     public int fJobsReceived = 0;
@@ -68,10 +73,49 @@ public class RabbitCluster
     {
         synchronized (fJobLock)
         {
-            // Κάνε set το Job μόνο αν το Clean Jobs ειναι True
+            // Αν έχει ερθει Clean Job καθάρισε το Queue
+            if (cleanJobs)
+            {
+                fLastJobs.clear();
+
+                fCurrentStratumJob = null;
+
+                // Πές στον Cluster Server να ζήτήσει απο τους clients-nodes
+                // να κάνουν Clean Jobs
+                fClusterServer.InformClientsToCleanJobs();
+
+                // Ζητα απο τον Cluster Server να κάνει 0 τα  ranges που δουλέυει ο κάθε client
+                // για να φανεί στο UI ότι τα Nodes είναι ανενεργά
+                fClusterServer.ClearRangesFromClients();
+            }
+
+            if (job != null)
+            {
+                fJobsReceived += 1;
+
+                switch (job.getCryptoAlgorithm())
+                {
+                    case RandomX:
+                        fNOnceRangeStepPerNodeThread = 250;
+                        break;
+
+                    case SCrypt:
+                        fNOnceRangeStepPerNodeThread = 8000;
+                        break;
+
+                    default:
+                        System.err.println("RabbitCluster.setCurrentStratumJob: Δέν έχει οριστεί κάτι για το συγκεκριμένο ECryptoAlgorithm");
+                        break;
+                }
+
+                fLastJobs.add(job);
+            }
+
+            /*// Κάνε set το Job μόνο αν το Clean Jobs ειναι True
             // ή άν αυτη τη στιγμή ΔΕΝ ΕΧΟΥΜΕ ΔΟΥΛΕΙΑ και η δουλειά που έχει έρθει δέν ειναι Null
             if (cleanJobs || fCurrentStratumJob == null)
             {
+                fLastJobs.clear();
                 fCurrentStratumJob = job;
                 fNOnceRangeIndex = -1;
 
@@ -103,6 +147,11 @@ public class RabbitCluster
                     }
                 }
             }
+            else
+            {
+                fJobsReceived += 1;
+                fLastJobs.add(job);
+            }*/
         }
     }
 
@@ -116,6 +165,21 @@ public class RabbitCluster
     {
         synchronized (fJobLock)
         {
+            // Αν δεν υπάρχει Job δές αν υπάρχει κάποιο στο Queue
+            if (fCurrentStratumJob == null && fLastJobs.size() > 0)
+            {
+                // Πές στον Cluster Server να ζήτήσει απο τους clients-nodes
+                // να κάνουν Clean Jobs
+                fClusterServer.InformClientsToCleanJobs();
+
+                // Ζητα απο τον Cluster Server να κάνει 0 τα  ranges που δουλέυει ο κάθε client
+                // για να φανεί στο UI ότι τα Nodes είναι ανενεργά
+                fClusterServer.ClearRangesFromClients();
+
+                fNOnceRangeIndex = -1;
+                fCurrentStratumJob = fLastJobs.poll();
+            }
+
             if (fCurrentStratumJob != null)
             {
                 try

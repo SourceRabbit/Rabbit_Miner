@@ -4,6 +4,7 @@ import Extasys.Network.TCP.Client.Exceptions.ConnectorCannotSendPacketException;
 import Extasys.Network.TCP.Client.Exceptions.ConnectorDisconnectedException;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import rabbitminer.Cluster.StratumClient.StratumClient;
 import rabbitminer.Cluster.StratumClient.StratumToken;
 import rabbitminer.Core.Settings.SettingsManager;
@@ -17,6 +18,9 @@ import rabbitminer.Stratum.StratumJob_SCrypt;
 public class Parser_SCrypt extends StratumParser
 {
 
+   
+    
+    
     public Parser_SCrypt(StratumClient myClient)
     {
         super(myClient);

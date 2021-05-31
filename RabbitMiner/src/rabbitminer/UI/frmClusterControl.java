@@ -79,7 +79,7 @@ public class frmClusterControl extends javax.swing.JFrame
             jLabelMingPoolURL.setText(fRabbitCluster.getStratumPoolSettings().getIPAddress().toString() + ":" + String.valueOf(fRabbitCluster.getStratumPoolSettings().getPort()));
             jLabelAlgorithm.setText(CryptoAlgorithmsManager.getCryptoAlgorithmNameFromEnum(fRabbitCluster.getStratumPoolSettings().getCryptoAlgorithm()));
             jLabelStatus.setText(fRabbitCluster.getStratumClient().getStatus());
-            jLabelJobs.setText(String.valueOf(fRabbitCluster.fJobsReceived) + "/" + String.valueOf(fRabbitCluster.fJobsSubmitted));
+            jLabelJobs.setText(String.valueOf(fRabbitCluster.fJobsReceived) + "/" + String.valueOf(fRabbitCluster.fJobsSubmitted) + " Queue(" + String.valueOf(fRabbitCluster.getJobsInQueue()) + ")");
 
             jLabelClusterIP.setText(fRabbitCluster.getClusterServerSettings().getIPAddress().toString());
             jLabelClusterPort.setText(String.valueOf(fRabbitCluster.getClusterServerSettings().getPort()));

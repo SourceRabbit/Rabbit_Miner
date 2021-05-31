@@ -12,7 +12,7 @@ import java.util.Properties;
 public class SettingsManager
 {
 
-    private static final String fAppVersion = "1.0.3";
+    private static final String fAppVersion = "1.0.4";
     public static final String fClusterSettingsFileExtension = "rbmcs";
     private static final String fSettingsFileName = "RabbitMiner.conf";
 

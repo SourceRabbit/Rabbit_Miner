@@ -125,7 +125,7 @@ public class ClusterServer extends Extasys.Network.TCP.Server.ExtasysTCPServer
 
                         // Καποιο Node ολοκλήρωσε ενα job με επιτυχία!
                         // Στειλε το αποτέλεσμα στον Stratum Server
-                        fMyCluster.setCurrentStratumJob(null, true);
+                        fMyCluster.setCurrentStratumJob(null, false);
 
                         // SEND DATA
                         fMyCluster.getStratumClient().SendData(submitJobStr + "\n");
@@ -159,7 +159,7 @@ public class ClusterServer extends Extasys.Network.TCP.Server.ExtasysTCPServer
 
                         // Καποιο Node ολοκλήρωσε ενα job με επιτυχία!
                         // Στειλε το αποτέλεσμα στον Stratum Server
-                        fMyCluster.setCurrentStratumJob(null, true);
+                        fMyCluster.setCurrentStratumJob(null, false);
                     }
 
                     break;
@@ -283,4 +283,6 @@ public class ClusterServer extends Extasys.Network.TCP.Server.ExtasysTCPServer
             });
         }
     }
+    
+   
 }

@@ -17,7 +17,6 @@ import rabbitminer.Cluster.Server.NodeTCPConnectionVariables;
 import rabbitminer.Cluster.StratumClient.StratumClient;
 import rabbitminer.Cluster.StratumClient.StratumPoolSettings;
 import rabbitminer.Stratum.StratumJob;
-import rabbitminer.Stratum.StratumJob_SCrypt;
 
 /**
  *
@@ -74,9 +73,12 @@ public class RabbitCluster
         synchronized (fJobLock)
         {
             // Αν έχει ερθει Clean Job καθάρισε το Queue
-            if (cleanJobs)
+            if (job == null || cleanJobs)
             {
-                fLastJobs.clear();
+                if (cleanJobs)
+                {
+                    fLastJobs.clear();
+                }
 
                 fCurrentStratumJob = null;
 
@@ -333,5 +335,10 @@ public class RabbitCluster
             return rabbitCluster;
         }
 
+    }
+
+    public int getJobsInQueue()
+    {
+        return fLastJobs.size();
     }
 }

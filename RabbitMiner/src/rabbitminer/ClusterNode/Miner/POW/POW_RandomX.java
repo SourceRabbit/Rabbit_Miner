@@ -8,7 +8,6 @@ import rabbitminer.Core.Computer;
 import rabbitminer.Crypto.CryptoAlgorithms.ECryptoAlgorithm;
 import rabbitminer.Stratum.StratumJob;
 import rabbitminer.Stratum.StratumJob_RandomX;
-import tk.netindev.drill.hasher.Hasher;
 
 /**
  *
@@ -83,7 +82,7 @@ public class POW_RandomX extends POW
 
         try
         {
-            Hasher.slowHash(blob, hash);
+            //Hasher.slowHash(blob, hash);
         }
         catch (Exception ex)
         {

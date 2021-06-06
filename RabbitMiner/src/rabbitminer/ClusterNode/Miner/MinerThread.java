@@ -84,7 +84,7 @@ public class MinerThread extends Thread
             }
             catch (Exception ex)
             {
-
+                fIsWorking = false;
             }
         }
     }

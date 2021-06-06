@@ -8,7 +8,6 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import rabbitminer.Cluster.RabbitCluster;
 import rabbitminer.Core.Settings.SettingsManager;
 import rabbitminer.UI.Tools.UIHelper;
-import tk.netindev.drill.hasher.Hasher;
 
 /**
  *
@@ -24,11 +23,7 @@ public class frmMain extends javax.swing.JFrame
         initComponents();
         UIHelper.MoveFormInCenterOfScreen(this);
 
-        this.setTitle("Rabbit Miner v" + SettingsManager.getAppVersion());
-
-        Hasher.Initialize();
-
-      
+        this.setTitle("Rabbit Miner v" + SettingsManager.getAppVersion());      
     }
 
     @SuppressWarnings("unchecked")

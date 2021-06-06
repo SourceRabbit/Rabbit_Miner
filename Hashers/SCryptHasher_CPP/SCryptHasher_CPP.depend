@@ -1,0 +1,6 @@
+# depslib dependency file v1.0
+1622973396 source:c:\development\rabbit_miner\hashers\scrypthasher_cpp\main.cpp
+	<string>
+	<iostream>
+	<vector>
+

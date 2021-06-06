@@ -1,0 +1,4 @@
+EXPORTS
+    Add @1
+    AssignBlockBytesWithoutNonce @2
+    xorSalsa8 @3

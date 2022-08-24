@@ -19,5 +19,5 @@ The following YouTube video explains how to create a <b>Litecoin mining cluster<
 <br><b>It is higly recommended not to use the server as a node.</b>
 
 
-[![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/9T3SOubl6n0/0.jpg)](https://www.youtube.com/watch?v=9T3SOubl6n0)
+[![Rabbit Miner - Cryptocurrency Cluster Miner](https://img.youtube.com/vi/9T3SOubl6n0/0.jpg)](https://www.youtube.com/watch?v=9T3SOubl6n0)
 <br>Video URL: https://www.youtube.com/watch?v=9T3SOubl6n0

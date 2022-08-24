@@ -73,7 +73,7 @@ public class frmMain extends javax.swing.JFrame
         jRadioButtonClusterServer.setText("Cluster Server");
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        jLabel3.setText("<html> This computer will be used as the cluster serverand will share<br> the Mining Process to the nodes that will be connected to it </html>");
+        jLabel3.setText("<html> This computer will be used as the cluster server and will share<br> the Mining Process to the nodes that will be connected to it </html>");
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jLabel4.setText("<html>\nThis computer will be used as a Node to connect to a Rabbit Miner Cluster<br>\nand mine cryptocurrencies\n</html>");

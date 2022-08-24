@@ -48,7 +48,6 @@ public class frmNewClusterNode extends javax.swing.JFrame
         jLabel2.setText("Cluster IP & Port:");
 
         jTextFieldClusterIP.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jTextFieldClusterIP.setText("89.45.252.48");
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(65, 130, 195));

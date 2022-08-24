@@ -6,7 +6,7 @@ Rabbit Miner
 
 About Rabbit Miner
 ------
-Rabbit Miner is a cluster based CPU Cryptocurrency miner written in Java by <a href="https://twitter.com/nsiatras">Nikos Siatras</a>, CEO of SourceRabbit. At the moment, Rabbit Miner only works with the SCrypt algorithm and it is not certain that it will be extended to other algorithms.
+Rabbit Miner is a cluster based CPU Cryptocurrency miner written in Java by <a href="https://twitter.com/nsiatras">Nikos Siatras</a>, CEO of <a href="https://www.sourcerabbit.com/">SourceRabbit</a>. At the moment, Rabbit Miner only works with the SCrypt algorithm and it is not certain that it will be extended to other algorithms.
 
 The reason we created Rabbit Miner is purely research. CPU mining is slow and cannot compete with modern mining methods, nevertheless Rabbit Miner is an <b>autonomous cross-platform</b> cluster system that can be extended to other areas besides cryptocurrency mining.
 

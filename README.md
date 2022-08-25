@@ -19,7 +19,7 @@ All you need is to clone this GitHub repository and use <a href="https://netbean
 How to use 
 ------
 
-The following YouTube video explains how to create a <b>Litecoin mining cluster</b>.<br> 
+The following YouTube video explains how to create a <b>Litecoin mining cluster</b>/<b>Dogecoin mining cluster</b>.<br> 
 <b>Notice:</b> For demonstration purposes we use the same computer as a cluster server and node.
 <br><b>It is higly recommended not to use the server as a node.</b>
 

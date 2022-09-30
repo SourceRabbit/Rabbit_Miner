@@ -10,6 +10,9 @@ Rabbit Miner is a cluster based CPU Cryptocurrency miner written in Java. At the
 
 The reason we created Rabbit Miner is purely research. CPU mining is slow and cannot compete with modern mining methods, nevertheless Rabbit Miner is an <b>autonomous cross-platform</b> cluster system that can be extended to other areas besides cryptocurrency mining.
 
+SourceRabbit on Discord:<br>
+[![](https://dcbadge.vercel.app/api/server/nRKETyjJ7E)](https://discord.gg/nRKETyjJ7E)
+
 How to build
 ------
 Building Rabbit Miner is a straight forward process.<br>

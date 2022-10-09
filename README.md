@@ -4,14 +4,13 @@ Rabbit Miner
 <a href="https://www.sourcerabbit.com/"><img src="https://github.com/SourceRabbit/Rabbit_Miner/blob/main/Images/Banner.png" alt="Rabbit Miner"></a>
 </p>
 
+[![](https://dcbadge.vercel.app/api/server/nRKETyjJ7E)](https://discord.gg/nRKETyjJ7E)
+
 About Rabbit Miner
 ------
 Rabbit Miner is a cluster based CPU Cryptocurrency miner written in Java. At the moment, Rabbit Miner only works with the SCrypt algorithm and it is not certain that it will be extended to other algorithms.
 
 The reason we created Rabbit Miner is purely research. CPU mining is slow and cannot compete with modern mining methods, nevertheless Rabbit Miner is an <b>autonomous cross-platform</b> cluster system that can be extended to other areas besides cryptocurrency mining.
-
-SourceRabbit on Discord:<br>
-[![](https://dcbadge.vercel.app/api/server/nRKETyjJ7E)](https://discord.gg/nRKETyjJ7E)
 
 How to build
 ------

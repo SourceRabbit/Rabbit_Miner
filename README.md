@@ -17,14 +17,12 @@ How to build
 Building Rabbit Miner is a straight forward process.<br>
 All you need is to clone this GitHub repository and use <a href="https://netbeans.apache.org/">Apache NetBeans IDE</a> to open the project.
 
-
 How to use 
 ------
 
 The following YouTube video explains how to create a <b>Litecoin</b>/<b>Dogecoin</b> CPU mining cluster.<br> 
 <b>Notice:</b> For demonstration purposes we use the same computer as a cluster server and node.
 <br><b>It is higly recommended not to use the server as a node.</b>
-
 
 [![Rabbit Miner - Cryptocurrency Cluster Miner](https://img.youtube.com/vi/eYrjSPF6QRg/0.jpg)](https://www.youtube.com/watch?v=eYrjSPF6QRg)
 <br>Video URL: https://www.youtube.com/watch?v=eYrjSPF6QRg

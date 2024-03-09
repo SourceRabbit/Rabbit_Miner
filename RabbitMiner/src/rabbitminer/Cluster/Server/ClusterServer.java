@@ -61,18 +61,21 @@ public class ClusterServer extends Extasys.Network.TCP.Server.ExtasysTCPServer
 
         // Κάνουμε initialize ενα Thread για να κάνει Ping τους Clients
         // κάθε 15 δευτερόλεπτα.
-        fPingConnectedClientsThread = new Thread(new Runnable()
+        fPingConnectedClientsThread = new Thread(() ->
         {
-            @Override
-            public void run()
+            final ManualResetEvent evt = new ManualResetEvent(false);
+            while (true)
             {
-                final ManualResetEvent evt = new ManualResetEvent(false);
-                while (true)
+                PingClients();
+                try
                 {
-                    PingClients();
                     evt.WaitOne(15000);
-                    evt.Reset();
                 }
+                catch (Exception ex)
+                {
+
+                }
+                evt.Reset();
             }
         });
         fPingConnectedClientsThread.start();
@@ -306,6 +309,5 @@ public class ClusterServer extends Extasys.Network.TCP.Server.ExtasysTCPServer
             });
         }
     }
-    
-   
+
 }

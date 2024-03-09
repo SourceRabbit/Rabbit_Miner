@@ -137,14 +137,28 @@ public class ClusterNode
         fAskServerForJobAndWaitForReplyEvent.Reset();
 
         ManualResetEvent tmpWait = new ManualResetEvent(false);
-        tmpWait.WaitOne(100);
+        try
+        {
+            tmpWait.WaitOne(100);
+        }
+        catch (Exception ex)
+        {
+
+        }
 
         try
         {
             fAskServerForJobAndWaitForReplyEvent.Reset();
 
             fClusterClient.SendData("GET_JOB" + ClusterCommunicationCommons.fMessageSplitter + ClusterCommunicationCommons.fETX);
-            fAskServerForJobAndWaitForReplyEvent.WaitOne(5000);
+            try
+            {
+                fAskServerForJobAndWaitForReplyEvent.WaitOne(5000);
+            }
+            catch (Exception ex)
+            {
+
+            }
         }
         catch (ConnectorDisconnectedException | ConnectorCannotSendPacketException ex)
         {

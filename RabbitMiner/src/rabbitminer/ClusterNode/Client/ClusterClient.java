@@ -170,52 +170,55 @@ public class ClusterClient extends Extasys.Network.TCP.Client.ExtasysTCPClient
 
     private void StartAutoReconnect()
     {
-        fAutoReconnectThread = new Thread(new Runnable()
+        fAutoReconnectThread = new Thread(() ->
         {
-            @Override
-            public void run()
+            while (fKeepAutoReconnect)
             {
-                while (fKeepAutoReconnect)
+
+                boolean isConnected = false;
+                if (!ClusterClient.ACTIVE_INSTANCE.getConnectors().isEmpty())
+                {
+                    if (ClusterClient.ACTIVE_INSTANCE.getConnectors().get(0).isConnected())
+                    {
+                        isConnected = true;
+                    }
+                }
+
+                // Check if connector is disconnected
+                if (!isConnected)
+                {
+                    // Get old connector properties
+                    InetAddress serverIP = ACTIVE_INSTANCE.fMyClusterNode.getClusterIP();
+                    int serverPort = ACTIVE_INSTANCE.fMyClusterNode.getClusterPort();
+                    int readBufferSize = 10240;
+                    String messageSplitter = ClusterCommunicationCommons.fETX;
+
+                    // Remove the old TCPConnector
+                    ClusterClient.ACTIVE_INSTANCE.RemoveConnector("");
+
+                    // Add new connector
+                    ClusterClient.ACTIVE_INSTANCE.AddConnector("", serverIP, serverPort, readBufferSize, messageSplitter);
+
+                    fMyClusterNode.setStatus("Trying to connect to server...");
+                    try
+                    {
+                        ((TCPConnector) ClusterClient.ACTIVE_INSTANCE.getConnectors().get(0)).Start();
+                    }
+                    catch (Exception ex)
+                    {
+                        fMyClusterNode.setStatus(ex.getMessage());
+                    }
+                }
+
+                // Wait 2 sec
+                ManualResetEvent evt = new ManualResetEvent(false);
+                try
+                {
+                    evt.WaitOne(2000);
+                }
+                catch (Exception ex)
                 {
 
-                    boolean isConnected = false;
-                    if (ClusterClient.ACTIVE_INSTANCE.getConnectors().size() > 0)
-                    {
-                        if (((TCPConnector) ClusterClient.ACTIVE_INSTANCE.getConnectors().get(0)).isConnected())
-                        {
-                            isConnected = true;
-                        }
-                    }
-
-                    // Check if connector is disconnected
-                    if (!isConnected)
-                    {
-                        // Get old connector properties
-                        InetAddress serverIP = ACTIVE_INSTANCE.fMyClusterNode.getClusterIP();
-                        int serverPort = ACTIVE_INSTANCE.fMyClusterNode.getClusterPort();
-                        int readBufferSize = 10240;
-                        String messageSplitter = ClusterCommunicationCommons.fETX;
-
-                        // Remove the old TCPConnector
-                        ClusterClient.ACTIVE_INSTANCE.RemoveConnector("");
-
-                        // Add new connector
-                        ClusterClient.ACTIVE_INSTANCE.AddConnector("", serverIP, serverPort, readBufferSize, messageSplitter);
-
-                        fMyClusterNode.setStatus("Trying to connect to server...");
-                        try
-                        {
-                            ((TCPConnector) ClusterClient.ACTIVE_INSTANCE.getConnectors().get(0)).Start();
-                        }
-                        catch (Exception ex)
-                        {
-                            fMyClusterNode.setStatus(ex.getMessage());
-                        }
-                    }
-
-                    // Wait 2 sec
-                    ManualResetEvent evt = new ManualResetEvent(false);
-                    evt.WaitOne(2000);
                 }
             }
         });

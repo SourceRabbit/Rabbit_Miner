@@ -40,9 +40,6 @@ import rabbitminer.Stratum.StratumJob_SCrypt;
 public class Parser_SCrypt extends StratumParser
 {
 
-   
-    
-    
     public Parser_SCrypt(StratumClient myClient)
     {
         super(myClient);
@@ -244,7 +241,14 @@ public class Parser_SCrypt extends StratumParser
 
         fMyClient.SendData(JSONSerializer.SerializeObject(map) + "\n");
 
-        fMinerConnectionWaitEvent.WaitOne(3000);
+        try
+        {
+            fMinerConnectionWaitEvent.WaitOne(3000);
+        }
+        catch (Exception ex)
+        {
+
+        }
     }
 
     private void Step2_AskPoolToAuthorizeMiner() throws ConnectorDisconnectedException, ConnectorCannotSendPacketException
@@ -262,7 +266,14 @@ public class Parser_SCrypt extends StratumParser
         map.put("params", params);
         fMyClient.SendData(JSONSerializer.SerializeObject(map) + "\n");
 
-        fMinerConnectionWaitEvent.WaitOne(3000);
+        try
+        {
+            fMinerConnectionWaitEvent.WaitOne(3000);
+        }
+        catch (Exception ex)
+        {
+
+        }
     }
 
     private void Step3_ExtranonceSubscribe() throws ConnectorDisconnectedException, ConnectorCannotSendPacketException

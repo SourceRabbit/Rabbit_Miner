@@ -180,6 +180,13 @@ public class Parser_RandomX extends StratumParser
         map.put("params", params);
 
         fMyClient.SendData(JSONSerializer.SerializeObject(map) + "\n");
-        fMinerConnectionWaitEvent.WaitOne(3000);
+        try
+        {
+            fMinerConnectionWaitEvent.WaitOne(3000);
+        }
+        catch (Exception ex)
+        {
+
+        }
     }
 }

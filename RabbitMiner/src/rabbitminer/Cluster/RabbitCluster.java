@@ -33,7 +33,7 @@ import rabbitminer.Stratum.StratumJob;
 public class RabbitCluster
 {
 
-    private Queue<StratumJob> fLastJobs = new LinkedList<StratumJob>();
+    private final Queue<StratumJob> fLastJobs = new LinkedList<>();
 
     // Statistics
     public int fJobsReceived = 0;
@@ -102,7 +102,7 @@ public class RabbitCluster
                         break;
 
                     case SCrypt:
-                        fNOnceRangeStepPerNodeThread = 8000;
+                        fNOnceRangeStepPerNodeThread = 20000;
                         break;
 
                     default:

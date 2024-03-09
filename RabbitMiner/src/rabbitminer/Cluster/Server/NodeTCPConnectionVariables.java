@@ -75,7 +75,7 @@ public class NodeTCPConnectionVariables
     }
 
     /**
-     * Κάνει set το nonce range που δουλευει το Node Ειναι γιά χρήση με το UI
+     * Κάνει set το nonce range που δουλευει το Node. Είναι γιά χρήση με το UI
      *
      * @param from
      * @param to

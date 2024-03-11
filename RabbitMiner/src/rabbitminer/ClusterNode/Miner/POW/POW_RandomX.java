@@ -107,7 +107,7 @@ public class POW_RandomX extends POW
 
             String reply = "JOB_SOLVED_RANDOMX" + ClusterCommunicationCommons.fMessageSplitter;
             reply += randomXJob.toJSON() + ClusterCommunicationCommons.fMessageSplitter;
-            reply += ClusterCommunicationCommons.fETX;
+
 
             try
             {

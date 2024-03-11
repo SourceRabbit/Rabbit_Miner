@@ -145,7 +145,7 @@ public class POW_SCrypt extends POW
             reply += extranonce2 + ClusterCommunicationCommons.fMessageSplitter;
             reply += nTime + ClusterCommunicationCommons.fMessageSplitter;
             reply += DecToHex.decToHex(nonce);
-            reply += ClusterCommunicationCommons.fETX;
+
 
             try
             {

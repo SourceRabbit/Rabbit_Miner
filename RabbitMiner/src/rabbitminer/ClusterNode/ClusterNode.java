@@ -150,7 +150,7 @@ public class ClusterNode
         {
             fAskServerForJobAndWaitForReplyEvent.Reset();
 
-            fClusterClient.SendData("GET_JOB" + ClusterCommunicationCommons.fMessageSplitter + ClusterCommunicationCommons.fETX);
+            fClusterClient.SendData("GET_JOB" + ClusterCommunicationCommons.fMessageSplitter);
             try
             {
                 fAskServerForJobAndWaitForReplyEvent.WaitOne(5000);

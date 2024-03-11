@@ -24,6 +24,7 @@
 package rabbitminer.ClusterNode.Client;
 
 import Extasys.DataFrame;
+import Extasys.Encryption.Base64Encryptor;
 import Extasys.ManualResetEvent;
 import Extasys.Network.TCP.Client.Connectors.TCPConnector;
 import java.net.InetAddress;
@@ -134,7 +135,7 @@ public class ClusterClient extends Extasys.Network.TCP.Client.ExtasysTCPClient
                 case "PING":
                     // Server sents PING.
                     // Answer with PONG.
-                    connector.SendData("PONG" + ClusterCommunicationCommons.fMessageSplitter + ClusterCommunicationCommons.fETX);
+                    connector.SendData("PONG" + ClusterCommunicationCommons.fMessageSplitter);
                     break;
 
             }
@@ -151,7 +152,7 @@ public class ClusterClient extends Extasys.Network.TCP.Client.ExtasysTCPClient
         fMyClusterNode.setStatus("Requesting access to Cluster...");
         String loginStr = "LOGIN" + ClusterCommunicationCommons.fMessageSplitter;
         loginStr += fMyClusterNode.getClusterPassword() + ClusterCommunicationCommons.fMessageSplitter;
-        loginStr += String.valueOf(Computer.getComputerCPUCoresCount()) + ClusterCommunicationCommons.fETX;
+        loginStr += String.valueOf(Computer.getComputerCPUCoresCount());
         try
         {
             SendData(loginStr);
@@ -191,13 +192,14 @@ public class ClusterClient extends Extasys.Network.TCP.Client.ExtasysTCPClient
                     InetAddress serverIP = ACTIVE_INSTANCE.fMyClusterNode.getClusterIP();
                     int serverPort = ACTIVE_INSTANCE.fMyClusterNode.getClusterPort();
                     int readBufferSize = 10240;
-                    String messageSplitter = ClusterCommunicationCommons.fETX;
 
                     // Remove the old TCPConnector
                     ClusterClient.ACTIVE_INSTANCE.RemoveConnector("");
 
                     // Add new connector
-                    ClusterClient.ACTIVE_INSTANCE.AddConnector("", serverIP, serverPort, readBufferSize, messageSplitter);
+                    TCPConnector conn = ClusterClient.ACTIVE_INSTANCE.AddConnector("", serverIP, serverPort, readBufferSize, ClusterCommunicationCommons.fETX);
+                    conn.setAutoApplyMessageSplitterState(true);
+                    conn.setConnectionEncryptor(new Base64Encryptor());
 
                     fMyClusterNode.setStatus("Trying to connect to server...");
                     try

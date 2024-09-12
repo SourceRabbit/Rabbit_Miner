@@ -24,7 +24,7 @@
 package rabbitminer.ClusterNode.Client;
 
 import Extasys.DataFrame;
-import Extasys.Encryption.Base64Encryptor;
+import Extasys.DataConvertion.Base64Converter;
 import Extasys.ManualResetEvent;
 import Extasys.Network.TCP.Client.Connectors.TCPConnector;
 import java.net.InetAddress;
@@ -199,7 +199,7 @@ public class ClusterClient extends Extasys.Network.TCP.Client.ExtasysTCPClient
                     // Add new connector
                     TCPConnector conn = ClusterClient.ACTIVE_INSTANCE.AddConnector("", serverIP, serverPort, readBufferSize, ClusterCommunicationCommons.fETX);
                     conn.setAutoApplyMessageSplitterState(true);
-                    conn.setConnectionEncryptor(new Base64Encryptor());
+                    conn.setConnectionDataConverter(new Base64Converter());
 
                     fMyClusterNode.setStatus("Trying to connect to server...");
                     try

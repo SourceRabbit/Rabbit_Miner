@@ -24,7 +24,7 @@
 package rabbitminer.Cluster.Server;
 
 import Extasys.DataFrame;
-import Extasys.Encryption.Base64Encryptor;
+import Extasys.DataConvertion.Base64Converter;
 import Extasys.ManualResetEvent;
 import Extasys.Network.TCP.Server.Listener.Exceptions.ClientIsDisconnectedException;
 import Extasys.Network.TCP.Server.Listener.Exceptions.OutgoingPacketFailedException;
@@ -47,19 +47,20 @@ import rabbitminer.UI.frmClusterControl;
  */
 public class ClusterServer extends Extasys.Network.TCP.Server.ExtasysTCPServer
 {
-    
+
     private final RabbitCluster fMyCluster;
     private final Object fClientsConnectOrDisconnectLock = new Object();
     private final HashMap<String, TCPClientConnection> fConnectedClients;
     private final Thread fPingConnectedClientsThread;
-    
+
     public ClusterServer(RabbitCluster myCluster, ClusterServerSettings clusterServerSettings)
     {
         super("", "", Computer.getComputerCPUCoresCount(), Computer.getComputerCPUCoresCount() * 2);
-        TCPListener listener = super.AddListener("", clusterServerSettings.getIPAddress(), clusterServerSettings.getPort(), 60000, 10240, 30000, 150, ClusterCommunicationCommons.fETX);
+        TCPListener listener = super.AddListener("", clusterServerSettings.getIPAddress(), clusterServerSettings.getPort(), 5000, 10240, 30000, 150, ClusterCommunicationCommons.fETX);
+
         listener.setAutoApplyMessageSplitterState(true);
-        listener.setConnectionEncryptor(new Base64Encryptor());
-        
+        listener.setConnectionDataConverter(new Base64Converter());
+
         fMyCluster = myCluster;
         fConnectedClients = new HashMap<>();
 
@@ -77,14 +78,14 @@ public class ClusterServer extends Extasys.Network.TCP.Server.ExtasysTCPServer
                 }
                 catch (Exception ex)
                 {
-                    
+
                 }
                 evt.Reset();
             }
         });
         fPingConnectedClientsThread.start();
     }
-    
+
     @Override
     public void OnDataReceive(TCPClientConnection sender, DataFrame data)
     {
@@ -92,7 +93,7 @@ public class ClusterServer extends Extasys.Network.TCP.Server.ExtasysTCPServer
         {
             String incomingStr = new String(data.getBytes(), "UTF-8");
             String[] parts = incomingStr.split(ClusterCommunicationCommons.fMessageSplitter);
-            
+
             switch (parts[0])
             {
                 case "LOGIN":
@@ -117,14 +118,14 @@ public class ClusterServer extends Extasys.Network.TCP.Server.ExtasysTCPServer
                         sender.SendData("WRONG_PASSWORD" + ClusterCommunicationCommons.fMessageSplitter);
                     }
                     break;
-                
+
                 case "GET_JOB":
                     if (CheckIfClientIsAuthorized(sender))
                     {
                         // Ζήτα απο το Cluster να φτιάξει ένα
                         // job για να το δώσουμε στο Node
                         StratumJob job = fMyCluster.GiveNodeAJobToDo(sender);
-                        
+
                         if (job != null)
                         {
                             sender.SendData("JOB" + ClusterCommunicationCommons.fMessageSplitter + job.toJSON());
@@ -136,7 +137,7 @@ public class ClusterServer extends Extasys.Network.TCP.Server.ExtasysTCPServer
                         }
                     }
                     break;
-                
+
                 case "JOB_SOLVED":
                     if (CheckIfClientIsAuthorized(sender))
                     {
@@ -144,7 +145,7 @@ public class ClusterServer extends Extasys.Network.TCP.Server.ExtasysTCPServer
                         final String extranonce2 = parts[2];
                         final String nTime = parts[3];
                         final String nonce = parts[4];
-                        
+
                         String submitJobStr = "{\"params\": [\"#WORKER_NAME#\", \"#JOB_ID#\", \"#EXTRANONCE_2#\", \"#NTIME#\", \"#NONCE#\"], \"id\": #STRATUM_MESSAGE_ID#, \"method\": \"mining.submit\"}";
                         submitJobStr = submitJobStr.replace("#WORKER_NAME#", fMyCluster.getStratumPoolSettings().getUsername());
                         submitJobStr = submitJobStr.replace("#JOB_ID#", jobID);
@@ -162,28 +163,28 @@ public class ClusterServer extends Extasys.Network.TCP.Server.ExtasysTCPServer
                         fMyCluster.fJobsSubmitted += 1;
                     }
                     break;
-                
+
                 case "JOB_SOLVED_RANDOMX":
                     if (CheckIfClientIsAuthorized(sender))
                     {
                         StratumJob_RandomX randomXJobSolved = new StratumJob_RandomX(parts[1]);
-                        
+
                         LinkedHashMap solvedJobParams = new LinkedHashMap();
                         solvedJobParams.put("id", Parser_RandomX.fPoolLoginID);
                         solvedJobParams.put("job_id", randomXJobSolved.getJobID());
                         solvedJobParams.put("nonce", randomXJobSolved.getSolution_NonceHexlifyByteArray());
                         solvedJobParams.put("result", randomXJobSolved.getSolution_HashHexlifyByteArray());
-                        
+
                         LinkedHashMap messageToPool = new LinkedHashMap();
                         messageToPool.put("id", 1);
                         messageToPool.put("jsonrpc", "2.0");
                         messageToPool.put("method", "submit");
                         messageToPool.put("params", solvedJobParams);
-                        
+
                         String dataToSend = JSONSerializer.SerializeObject(messageToPool);
-                        
+
                         System.err.println(dataToSend);
-                        
+
                         fMyCluster.getStratumClient().SendData(dataToSend + "\n");
                         System.out.println("SOLVED!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 
@@ -191,20 +192,20 @@ public class ClusterServer extends Extasys.Network.TCP.Server.ExtasysTCPServer
                         // Στειλε το αποτέλεσμα στον Stratum Server
                         fMyCluster.setCurrentStratumJob(null, false);
                     }
-                    
+
                     break;
-                
+
                 case "PONG":
                     if (CheckIfClientIsAuthorized(sender))
                     {
-                        
+
                     }
                     break;
             }
         }
         catch (Exception ex)
         {
-            
+
         }
     }
 
@@ -221,10 +222,10 @@ public class ClusterServer extends Extasys.Network.TCP.Server.ExtasysTCPServer
             NodeTCPConnectionVariables var = (NodeTCPConnectionVariables) client.getTag();
             return var.isClientAuthorized();
         }
-        
+
         return false;
     }
-    
+
     @Override
     public void OnClientConnect(TCPClientConnection client)
     {
@@ -236,7 +237,7 @@ public class ClusterServer extends Extasys.Network.TCP.Server.ExtasysTCPServer
             frmClusterControl.ACTIVE_INSTANCE.NodeConnected(client);
         }
     }
-    
+
     @Override
     public void OnClientDisconnect(TCPClientConnection client)
     {
@@ -251,7 +252,7 @@ public class ClusterServer extends Extasys.Network.TCP.Server.ExtasysTCPServer
             }
         }
     }
-    
+
     public void InformClientsToCleanJobs()
     {
         synchronized (fClientsConnectOrDisconnectLock)
@@ -267,7 +268,7 @@ public class ClusterServer extends Extasys.Network.TCP.Server.ExtasysTCPServer
                 }
             });
         }
-        
+
     }
 
     /**
@@ -285,17 +286,17 @@ public class ClusterServer extends Extasys.Network.TCP.Server.ExtasysTCPServer
                 }
                 catch (ClientIsDisconnectedException | OutgoingPacketFailedException ex)
                 {
-                    
+
                 }
             });
         }
     }
-    
+
     public HashMap<String, TCPClientConnection> getConnectedClients()
     {
         return fConnectedClients;
     }
-    
+
     public void ClearRangesFromClients()
     {
         synchronized (fClientsConnectOrDisconnectLock)
@@ -308,10 +309,10 @@ public class ClusterServer extends Extasys.Network.TCP.Server.ExtasysTCPServer
                 }
                 catch (Exception ex)
                 {
-                    
+
                 }
             });
         }
     }
-    
+
 }
